@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 import uuid
 from flask import Flask, request, jsonify, send_file, abort, current_app, send_from_directory
@@ -8,6 +9,9 @@ import openai
 from openai import OpenAI
 import os
 import qdrant_client
+import azure.cognitiveservices.speech as speechsdk
+from azure.cognitiveservices.speech import SpeechConfig, SpeechSynthesizer
+from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from qdrant_client import QdrantClient, models
 
 collection_name = "unity_talk_test_data"
@@ -27,11 +31,8 @@ feature="ENFP（社交的、直感的、感受性が強い、柔軟性がある�
 # Flaskアプリケーションの初期化
 app = Flask(__name__)
 
-# 環境変数からOpenAI APIキーの取得
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
 # OpenAIとLangChainの設定
-llm = openai.OpenAI()
+llm = OpenAI()
 embeddings = OpenAIEmbeddings()
 
 client = qdrant_client.QdrantClient(
@@ -60,7 +61,7 @@ def submit_query():
         all_contents = " ーーー ".join(contents)
         client = OpenAI()
         response = client.chat.completions.create(
-        model="gpt-4-1106-preview",
+        model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": "---あなたは、[専門家1]、[専門家2]、[専門家3]、の知識を持っています。[目的]を達成するために、[ルール１]、[ルール２]、[ルール３]、[ルール４]、[ルール５]、[ルール６]、[ルール７]、[ルール８]、[ルール９]、[ルール１０]に従って、[業務]を遂行してください。"},
