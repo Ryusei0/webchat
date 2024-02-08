@@ -3,15 +3,13 @@ from datetime import datetime
 import uuid
 from flask import Flask, request, jsonify, send_file, abort, current_app, send_from_directory
 from flask_cors import CORS
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Qdrant
+import qdrant_client
+import os
 import openai
 from openai import OpenAI
-import os
-import qdrant_client
-import azure.cognitiveservices.speech as speechsdk
-from azure.cognitiveservices.speech import SpeechConfig, SpeechSynthesizer
-from azure.cognitiveservices.speech.audio import AudioOutputConfig
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.chains import RetrievalQA
+from langchain.vectorstores import Qdrant
 from qdrant_client import QdrantClient, models
 
 collection_name = "unity_talk_test_data"
