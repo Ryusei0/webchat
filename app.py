@@ -11,6 +11,10 @@ from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
 from qdrant_client import QdrantClient, models
 
+# Flaskアプリケーションの初期化
+app = Flask(__name__)
+CORS(app)
+
 collection_name = "unity_talk_test_data"
 person_id="ID-002"
 company_id="001"
@@ -24,9 +28,6 @@ points="- リハビリテーション分野におけるコミュニケーショ�
 student="[得意な科目]: 英語-[所属部活]: 演劇部-[特徴]: 映画鑑賞が趣味で、自分で脚本を書くことに興味を持っている"
 
 feature="ENFP（社交的、直感的、感受性が強い、柔軟性がある）"
-
-# Flaskアプリケーションの初期化
-app = Flask(__name__)
 
 # OpenAIとLangChainの設定
 embeddings = OpenAIEmbeddings()
