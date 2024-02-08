@@ -6,7 +6,6 @@ from flask_cors import CORS
 import qdrant_client
 import os
 import openai
-from openai import OpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
@@ -30,7 +29,6 @@ feature="ENFP（社交的、直感的、感受性が強い、柔軟性がある�
 app = Flask(__name__)
 
 # OpenAIとLangChainの設定
-llm = OpenAI()
 embeddings = OpenAIEmbeddings()
 
 client = qdrant_client.QdrantClient(
@@ -57,8 +55,7 @@ def submit_query():
         for idx, i in enumerate(docs, 1):
           contents.append(f"情報{idx}：{i.page_content}")
         all_contents = " ーーー ".join(contents)
-        client = OpenAI()
-        response = client.chat.completions.create(
+        response = openai.chat.completions.create(
         model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
