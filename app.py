@@ -46,17 +46,14 @@ def submit_query():
     data = request.json
     input_text = data.get('input_text', '')
 
-    if not input_text:
-        return jsonify({"error": "入力テキストが提供されていません"}), 400
-
-    try:
-        docs = db.similarity_search(query=input_text, k=4)
     
-        contents = []
-        for idx, i in enumerate(docs, 1):
-          contents.append(f"情報{idx}：{i.page_content}")
-        all_contents = " ーーー ".join(contents)
-        response = openai.chat.completions.create(
+    docs = db.similarity_search(query=input_text, k=4)
+    
+    contents = []
+    for idx, i in enumerate(docs, 1):
+        contents.append(f"情報{idx}：{i.page_content}")
+    all_contents = " ーーー ".join(contents)
+    response = openai.chat.completions.create(
         model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
@@ -67,13 +64,11 @@ def submit_query():
             {"role": "user", "content": all_contents},
         ]
     )
-        response_text = response.choices[0].text.strip()
+    response_text = response.choices[0].text.strip()
 
         # 応答をデータベースに保存（省略可能）
 
-        return jsonify({"response": response_text})
-    except Exception as e:
-        return jsonify({"error": "応答の生成中にエラーが発生しました", "details": str(e)}), 500
+    return jsonify({"response": response_text})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
