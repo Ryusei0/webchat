@@ -67,7 +67,7 @@ def submit_query():
             {"role": "user", "content": all_contents},
         ]
     )
-    response_text = response.choices[0].text.strip()
+    response_text = response.choices[0].message.content
 
         # 応答をデータベースに保存（省略可能）
 
