@@ -37,9 +37,8 @@ client = qdrant_client.QdrantClient(
     api_key=qdrant_api_key,
 )
 
-collection_name = "unity_talk_test_data"
 # Qdrantデータベースの設定
-db = Qdrant(client=client, collection_name=collection_name, embeddings=embeddings)
+db = Qdrant(client=client, collection_name="univ_data", embeddings=embeddings)
 
 
 @app.route('/submit-query', methods=['POST'])
