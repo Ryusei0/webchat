@@ -31,6 +31,7 @@ student="[得意な科目]: 英語-[所属部活]: 演劇部-[特徴]: 映画鑑
 feature="ENFP（社交的、直感的、感受性が強い、柔軟性がある）"
 
 # OpenAIとLangChainの設定
+llm=OpenAI()
 embeddings = OpenAIEmbeddings()
 
 client = qdrant_client.QdrantClient(
