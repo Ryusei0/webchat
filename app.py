@@ -6,6 +6,7 @@ from flask_cors import CORS
 import qdrant_client
 import os
 import openai
+from openai import OpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
@@ -53,7 +54,8 @@ def submit_query():
     for idx, i in enumerate(docs, 1):
         contents.append(f"情報{idx}：{i.page_content}")
     all_contents = " ーーー ".join(contents)
-    response = openai.chat.completions.create(
+    client = OpenAI()
+    response = client.chat.completions.create(
         model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
